@@ -1,0 +1,4 @@
+Create a product drop campaign for a new limited collection.
+Use SMS, RCS, and email.
+Prioritize high-value customers and loyalty members.
+Personalize based on first name, favorite category, loyalty tier, and lifetime value.

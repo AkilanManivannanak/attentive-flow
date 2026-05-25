@@ -1,0 +1,3 @@
+Create a winback campaign for inactive customers who have not purchased in at least 60 days.
+Use email first and SMS second for customers who are opted into text messages.
+Personalize based on first name, favorite category, last purchase recency, and loyalty tier.

@@ -1,0 +1,3 @@
+Create an abandoned cart campaign for customers with cart value above $75.
+Use SMS first, email after 24 hours if they do not click, and push if they have the app installed.
+Personalize based on first name, cart value, product category, and loyalty tier.

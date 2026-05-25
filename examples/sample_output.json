@@ -1,0 +1,324 @@
+{
+  "campaign_brief": {
+    "raw_brief": "\nCreate an abandoned cart campaign for customers with cart value above $75.\nUse SMS first, email after 24 hours if they do not click, and push if they have the app installed.\nPersonalize based on first name, cart value, product category, and loyalty tier.\n",
+    "campaign_type": "abandoned_cart",
+    "goal": "Recover abandoned cart revenue",
+    "channels": [
+      "sms",
+      "email",
+      "push"
+    ],
+    "audience_rules": {
+      "cart_value_min": 75,
+      "requires_app_installed_for_push": true,
+      "requires_sms_opt_in": true,
+      "requires_email_opt_in": true
+    },
+    "personalization_fields": [
+      "first_name",
+      "favorite_category",
+      "cart_value",
+      "loyalty_tier"
+    ]
+  },
+  "audience_summary": "Found 509 customers matching campaign rules. Channel eligibility: {'sms': 509, 'email': 509, 'push': 128}.",
+  "steps": [
+    {
+      "step_id": "step_1",
+      "channel": "sms",
+      "delay": "1 hour after cart abandonment",
+      "condition": "customer has sms_opt_in=true",
+      "message": {
+        "channel": "sms",
+        "subject": null,
+        "body": "Sam, your men's fashion picks worth $163.44 are still waiting. Complete your order today. Reply STOP to opt out.",
+        "cta": "Complete your order",
+        "personalization_used": [
+          "first_name",
+          "favorite_category",
+          "cart_value"
+        ]
+      },
+      "success_metric": "sms_click_through_rate"
+    },
+    {
+      "step_id": "step_2",
+      "channel": "email",
+      "delay": "24 hours after SMS if no click",
+      "condition": "customer has email_opt_in=true and previous step did not click",
+      "message": {
+        "channel": "email",
+        "subject": "Your cart is still waiting, Sam",
+        "body": "Hi Sam,\n\nYou left some men's fashion items in your cart. Your current cart value is $163.44.\n\nAs a silver loyalty member, now is a great time to complete your order and keep your shopping momentum going.\n\nReturn to your cart to finish checkout.",
+        "cta": "Return to cart",
+        "personalization_used": [
+          "first_name",
+          "favorite_category",
+          "cart_value",
+          "loyalty_tier"
+        ]
+      },
+      "success_metric": "email_click_through_rate"
+    },
+    {
+      "step_id": "step_3",
+      "channel": "push",
+      "delay": "2 hours after email if no conversion",
+      "condition": "customer has app_installed=true and push_opt_in=true",
+      "message": {
+        "channel": "push",
+        "subject": null,
+        "body": "Sam, your men's fashion cart is waiting. Tap to complete your order.",
+        "cta": "Open app",
+        "personalization_used": [
+          "first_name",
+          "favorite_category"
+        ]
+      },
+      "success_metric": "push_open_rate"
+    }
+  ],
+  "experiment_plan": {
+    "hypothesis": "Personalized cart reminders that mention product category and cart value will drive higher click-through and checkout completion than generic reminders.",
+    "variant_a": "Value-focused message emphasizing the items left in cart and easy checkout.",
+    "variant_b": "Loyalty-focused message emphasizing customer tier and shopping momentum.",
+    "primary_metric": "conversion_rate",
+    "secondary_metrics": [
+      "click_through_rate",
+      "recovered_revenue",
+      "unsubscribe_rate"
+    ]
+  },
+  "compliance": {
+    "passed": false,
+    "issues": [
+      {
+        "severity": "high",
+        "issue": "Push message generated for a customer without the app installed.",
+        "recommendation": "Only send push notifications to customers with app_installed=true."
+      },
+      {
+        "severity": "high",
+        "issue": "Push message generated for a customer who has not opted into push.",
+        "recommendation": "Only send push notifications to customers with push_opt_in=true."
+      }
+    ]
+  },
+  "evaluation": {
+    "personalization_score": 9,
+    "clarity_score": 10,
+    "cta_score": 9,
+    "compliance_score": 2,
+    "channel_fit_score": 10,
+    "overall_score": 8,
+    "issues": [
+      "Push message generated for a customer without the app installed.",
+      "Push message generated for a customer who has not opted into push."
+    ]
+  },
+  "workflow_json": {
+    "campaign_type": "abandoned_cart",
+    "goal": "Recover abandoned cart revenue",
+    "audience": {
+      "summary": "Found 509 customers matching campaign rules. Channel eligibility: {'sms': 509, 'email': 509, 'push': 128}.",
+      "rules": {
+        "cart_value_min": 75,
+        "requires_app_installed_for_push": true,
+        "requires_sms_opt_in": true,
+        "requires_email_opt_in": true
+      },
+      "total_matching_customers": 509,
+      "channel_counts": {
+        "sms": 509,
+        "email": 509,
+        "push": 128
+      }
+    },
+    "workflow_steps": [
+      {
+        "step_id": "step_1",
+        "channel": "sms",
+        "delay": "1 hour after cart abandonment",
+        "condition": "customer has sms_opt_in=true",
+        "message": {
+          "channel": "sms",
+          "subject": null,
+          "body": "Sam, your men's fashion picks worth $163.44 are still waiting. Complete your order today. Reply STOP to opt out.",
+          "cta": "Complete your order",
+          "personalization_used": [
+            "first_name",
+            "favorite_category",
+            "cart_value"
+          ]
+        },
+        "success_metric": "sms_click_through_rate"
+      },
+      {
+        "step_id": "step_2",
+        "channel": "email",
+        "delay": "24 hours after SMS if no click",
+        "condition": "customer has email_opt_in=true and previous step did not click",
+        "message": {
+          "channel": "email",
+          "subject": "Your cart is still waiting, Sam",
+          "body": "Hi Sam,\n\nYou left some men's fashion items in your cart. Your current cart value is $163.44.\n\nAs a silver loyalty member, now is a great time to complete your order and keep your shopping momentum going.\n\nReturn to your cart to finish checkout.",
+          "cta": "Return to cart",
+          "personalization_used": [
+            "first_name",
+            "favorite_category",
+            "cart_value",
+            "loyalty_tier"
+          ]
+        },
+        "success_metric": "email_click_through_rate"
+      },
+      {
+        "step_id": "step_3",
+        "channel": "push",
+        "delay": "2 hours after email if no conversion",
+        "condition": "customer has app_installed=true and push_opt_in=true",
+        "message": {
+          "channel": "push",
+          "subject": null,
+          "body": "Sam, your men's fashion cart is waiting. Tap to complete your order.",
+          "cta": "Open app",
+          "personalization_used": [
+            "first_name",
+            "favorite_category"
+          ]
+        },
+        "success_metric": "push_open_rate"
+      }
+    ],
+    "experiment_plan": {
+      "hypothesis": "Personalized cart reminders that mention product category and cart value will drive higher click-through and checkout completion than generic reminders.",
+      "variant_a": "Value-focused message emphasizing the items left in cart and easy checkout.",
+      "variant_b": "Loyalty-focused message emphasizing customer tier and shopping momentum.",
+      "primary_metric": "conversion_rate",
+      "secondary_metrics": [
+        "click_through_rate",
+        "recovered_revenue",
+        "unsubscribe_rate"
+      ]
+    },
+    "compliance": {
+      "passed": false,
+      "issues": [
+        {
+          "severity": "high",
+          "issue": "Push message generated for a customer without the app installed.",
+          "recommendation": "Only send push notifications to customers with app_installed=true."
+        },
+        {
+          "severity": "high",
+          "issue": "Push message generated for a customer who has not opted into push.",
+          "recommendation": "Only send push notifications to customers with push_opt_in=true."
+        }
+      ]
+    },
+    "evaluation": {
+      "personalization_score": 9,
+      "clarity_score": 10,
+      "cta_score": 9,
+      "compliance_score": 2,
+      "channel_fit_score": 10,
+      "overall_score": 8,
+      "issues": [
+        "Push message generated for a customer without the app installed.",
+        "Push message generated for a customer who has not opted into push."
+      ]
+    },
+    "repair_result": {
+      "original_compliance": {
+        "passed": false,
+        "issues": [
+          {
+            "severity": "high",
+            "issue": "Push message generated for a customer without the app installed.",
+            "recommendation": "Only send push notifications to customers with app_installed=true."
+          },
+          {
+            "severity": "high",
+            "issue": "Push message generated for a customer who has not opted into push.",
+            "recommendation": "Only send push notifications to customers with push_opt_in=true."
+          }
+        ]
+      },
+      "original_evaluation": {
+        "personalization_score": 9,
+        "clarity_score": 10,
+        "cta_score": 9,
+        "compliance_score": 2,
+        "channel_fit_score": 10,
+        "overall_score": 8,
+        "issues": [
+          "Push message generated for a customer without the app installed.",
+          "Push message generated for a customer who has not opted into push."
+        ]
+      },
+      "repaired_messages": [
+        {
+          "channel": "sms",
+          "subject": null,
+          "body": "Sam, your men's fashion picks worth $163.44 are still waiting. Complete your order today. Reply STOP to opt out.",
+          "cta": "Complete your order",
+          "personalization_used": [
+            "first_name",
+            "favorite_category",
+            "cart_value"
+          ]
+        },
+        {
+          "channel": "email",
+          "subject": "Your cart is still waiting, Sam",
+          "body": "Hi Sam,\n\nYou left some men's fashion items in your cart. Your current cart value is $163.44.\n\nAs a silver loyalty member, now is a great time to complete your order and keep your shopping momentum going.\n\nReturn to your cart to finish checkout.",
+          "cta": "Return to cart",
+          "personalization_used": [
+            "first_name",
+            "favorite_category",
+            "cart_value",
+            "loyalty_tier"
+          ]
+        }
+      ],
+      "repaired_compliance": {
+        "passed": true,
+        "issues": []
+      },
+      "repaired_evaluation": {
+        "personalization_score": 9,
+        "clarity_score": 10,
+        "cta_score": 9,
+        "compliance_score": 10,
+        "channel_fit_score": 10,
+        "overall_score": 10,
+        "issues": []
+      },
+      "repair_summary": {
+        "removed_channels": [
+          "push"
+        ],
+        "before_overall_score": 8,
+        "after_overall_score": 10,
+        "before_compliance_passed": false,
+        "after_compliance_passed": true
+      }
+    },
+    "sample_customer": {
+      "user_id": "u_0001",
+      "first_name": "Sam",
+      "email": "sam1@example.com",
+      "email_opt_in": true,
+      "sms_opt_in": true,
+      "push_opt_in": false,
+      "rcs_supported": false,
+      "app_installed": false,
+      "loyalty_tier": "silver",
+      "cart_value": 163.44,
+      "favorite_category": "men's fashion",
+      "last_purchase_days_ago": 23,
+      "purchase_count": 9,
+      "lifetime_value": 1235.03
+    }
+  }
+}
