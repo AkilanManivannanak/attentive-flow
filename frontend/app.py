@@ -1,8 +1,16 @@
 import json
-import requests
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-API_URL = "http://127.0.0.1:8000/generate-workflow"
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.append(str(ROOT_DIR))
+
+from backend.config import OPENAI_API_KEY, USE_LLM_COPY, MODEL_NAME
+from backend.workflows.compiler import compile_workflow
+
 
 st.set_page_config(
     page_title="AttentiveFlow",
@@ -22,13 +30,16 @@ st.markdown(
 
     - campaign brief parsing
     - audience segmentation
-    - cross-channel message generation
+    - LLM-powered or template-based message generation
     - compliance validation
     - A/B test planning
     - campaign scoring
     - automated repair loops
     """
 )
+
+llm_status = "Enabled" if USE_LLM_COPY and OPENAI_API_KEY else "Template fallback"
+st.caption(f"Message generation mode: **{llm_status}** · Model: `{MODEL_NAME}`")
 
 st.divider()
 
@@ -61,15 +72,8 @@ generate = st.button("Generate Workflow", type="primary")
 if generate:
     with st.spinner("Generating workflow..."):
         try:
-            response = requests.post(
-                API_URL,
-                json={"brief": brief},
-                timeout=30,
-            )
-            response.raise_for_status()
-
-            data = response.json()
-            workflow = data["workflow"]
+            workflow_obj = compile_workflow(brief)
+            workflow = workflow_obj.model_dump()
             workflow_json = workflow["workflow_json"]
             repair_result = workflow_json["repair_result"]
             repair_summary = repair_result["repair_summary"]
@@ -83,7 +87,7 @@ if generate:
             with col1:
                 st.metric(
                     "Campaign Type",
-                    workflow["campaign_brief"]["campaign_type"],
+                    str(workflow["campaign_brief"]["campaign_type"]).replace("CampaignType.", ""),
                 )
 
             with col2:
@@ -319,12 +323,6 @@ if generate:
                 )
 
                 st.json(workflow_json)
-
-        except requests.exceptions.ConnectionError:
-            st.error(
-                "Could not connect to FastAPI backend. "
-                "Make sure uvicorn is running on port 8000."
-            )
 
         except Exception as exc:
             st.error(f"Error: {exc}")
