@@ -124,30 +124,6 @@ Message generation mode:
 | No API key / `USE_LLM_COPY=false` | Falls back to deterministic templates           |
 | LLM returns invalid JSON          | Falls back to templates automatically           |
 
----
-
-## 📸 Screenshots
-
-Add your screenshots to:
-
-```text
-screenshots/executive-summary.png
-screenshots/repaired-workflow.png
-screenshots/workflow-steps.png
-screenshots/repair-loop.png
-```
-
-Then uncomment:
-
-```md
-![Executive Summary](screenshots/executive-summary.png)
-
-![Repaired Workflow](screenshots/repaired-workflow.png)
-
-![Workflow Steps](screenshots/workflow-steps.png)
-
-![Repair Loop](screenshots/repair-loop.png)
-```
 
 ---
 
